@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DES exposure checker | Viewer</title>
+  <title>KBMOD stamp viewer | Viewer</title>
   <link rel="stylesheet" media="screen" href="assets/bootstrap/css/bootstrap.min.css" type="text/css" charset="utf-8">
   <link rel="stylesheet" media="screen" href="assets/eyeball.css" type="text/css" charset="utf-8">
   <meta charset="utf-8">
@@ -11,8 +11,8 @@
   <!--[if lt IE 9]
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <script type="text/javascript" src="assets/fits.js"></script>
-  <script type="text/javascript" src="assets/webfits-canvas.0.3.1.js"></script>
+  <!-- <script type="text/javascript" src="assets/fits.js"></script>
+  <script type="text/javascript" src="assets/webfits-canvas.0.3.1.js"></script> -->
   <script type="text/javascript" src="assets/viewer.js"></script>
 </head>
 
@@ -22,7 +22,7 @@
     <!-- NAVBAR -->
     <div class="navbar">
       <div class="navbar-inner">
-	<a class="brand" href="index.html">DES exposure checker</a>
+	<a class="brand" href="index.html">KBMOD stamp viewer</a>
 	<ul class="nav">
           <li class="active"><a href="#">Viewer</a></li>
 	  <li><a href="tutorial.html">Tutorial</a></li>
@@ -33,7 +33,7 @@
           <li><a href="hodgepodge.html">Hodge-podge</a></li>
 	</ul>
         <ul class="nav pull-right hide" id="user-menu">
-	  
+
           <li id="mydata-li" class="dropdown" style="display: none">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <span id="username">Username</span> <span class="badge userrank">&nbsp;</span>
@@ -49,9 +49,9 @@
           <li id="login-li"><a href="index.html" class="login-trigger">Log in ...</a></li>
 	  <!--#include file="release_selector.shtml"-->
         </ul>
-      </div> 
+      </div>
     </div>
-    
+
     <!-- BUTTONS -->
     <div style="margin-top:20px; position:relative;">
       <button id="fine-button" class="btn btn-success send">Next</button>
@@ -77,11 +77,11 @@
         <button class="btn btn-primary" href="#" id="scaling-button">Toggle <u>s</u>caling</button>
       </span>
     </div>
-    
+
     <!-- IMAGE -->
     <div id="loading" class="hide" style="position:relative; left:512px; top:266px; z-index:1000; width:48px;"></div>
     <div id="wicked-science-visualization" style="margin: 10px 0px; height:512px; width: 1024px; background-color:#CCCCCC;"></div>
-    
+
     <!-- MODALS -->
     <div class="modal hide" id="problem-modal">
       <div class="modal-header">
@@ -96,7 +96,7 @@
         <button id="problem-text-button" class="btn btn-primary">Done</button>
       </div>
     </div>
-    
+
     <div class="modal hide" id="fov-modal" tabindex="-1">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -108,7 +108,7 @@
       </div>
       <div id="fov-url" class="hide"></div>
     </div>
-    
+
     <div class="modal hide" id="mystats-modal" tabindex="-1">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -130,7 +130,7 @@
       </div>
       <div class="modal-body"></div>
     </div>
-    
+
     <div class="modal hide" id="congrats-modal" tabindex="-1">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -144,7 +144,7 @@
         <button class="btn btn-primary" data-dismiss="modal">Keep going!</button>
       </div>
     </div>
-    
+
     <div class="modal hide" id="share-modal" tabindex="-1">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -154,7 +154,7 @@
         <textarea style="width:516px;" type="text" id="share-url" disabled></textarea>
       </div>
     </div>
-    
+
     <div class="modal hide" id="desdm-modal" tabindex="-1">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -164,7 +164,7 @@
         <textarea style="width:516px;" type="text" id="desdm-url" disabled></textarea>
       </div>
     </div>
-    
+
     <div class="modal hide" id="login-modal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -179,7 +179,7 @@
         <a href="index.html" class="btn btn-primary login-trigger">Login...</a>
       </div>
     </div>
-    
+
     <div class="modal hide" id="message-modal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -216,32 +216,34 @@
     spinner = new Spinner({color: "#049cdb"}).spin();
     $('#loading').append(spinner.el);
 
-    // set up release
-    var urlparams = $.url().param();
-    if (urlparams.hasOwnProperty('release') === false) {
-      setRelease($.cookie('default-release'), false);
-      urlparams['release'] = release;
-    }
-    else
-      release = urlparams['release'];
+    createVisualization();
 
-    $(".release_name").html(release);
-    // what happens when the release button is clicked
-    $('a[class*="release-button"]').on('click', function(evt) {
-      var newrelease = this.id.split("-").pop();
-      if (newrelease != release) {
-        setRelease(newrelease, false);
-        getNextImage();
-        setChipLayout();
-        if (checkSessionCookie())
-          getMyData();
-      }
-    });
-    
+    // // set up release
+    // var urlparams = $.url().param();
+    // if (urlparams.hasOwnProperty('release') === false) {
+    //   setRelease($.cookie('default-release'), false);
+    //   urlparams['release'] = release;
+    // }
+    // else
+    //   release = urlparams['release'];
+
+    // $(".release_name").html(release);
+    // // what happens when the release button is clicked
+    // $('a[class*="release-button"]').on('click', function(evt) {
+    //   var newrelease = this.id.split("-").pop();
+    //   if (newrelease != release) {
+    //     setRelease(newrelease, false);
+    //     getNextImage();
+    //     setChipLayout();
+    //     if (checkSessionCookie())
+    //       getMyData();
+    //   }
+    // });
+
     var urlparams = $.url().param();
     if (urlparams.hasOwnProperty('release') === false)
       urlparams['release'] = release;
-    
+
     // if user is logged in: show user dropdown
     if (checkSessionCookie()) {
       getMyData();
@@ -266,17 +268,17 @@
         evt.preventDefault();
       });
     }
-    
-    // get first image data
-    getNextImage(urlparams);
-    
+
+    // // get first image data
+    // getNextImage(urlparams);
+
     // setup FoV chip layout
-    setChipLayout();
+    // setChipLayout();
   });
   $('form').submit(function() {
     return false;
   });
-  
+
   // initialize fields and modals
   problem_default = $('#problem-name').html();
   $('#problem-modal').modal({"backdrop": false, "show": false, "keyboard": false });
@@ -287,7 +289,7 @@
   $('#mystats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
   $('#congrats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
   $('#message-modal').modal({"backdrop": true, "show":false, "keyboard": false});
-  
+
   // button actions
   $('button[class*="send"]').on('click', function(evt) {
     sendResponse();
@@ -371,7 +373,7 @@
     // update typeahead
     var typeahead_source = $('#problem-text').typeahead().data('typeahead').source;
     if ($.inArray(problemName, typeahead_source) == -1)
-      typeahead_source.push(problemName); 
+      typeahead_source.push(problemName);
     if (problemName.length > 11)
       problemName = problemName.substring(0,10) + "...";
     $('#problem-name').html(problemName);
@@ -400,7 +402,7 @@
     if (marks.length == 0)
       $('#clear-button').hide();
   });
-  
+
   // user requests
   $('#mystats-anchor').on('click', function() {
     getMyData();
@@ -415,16 +417,16 @@
       window.location.href="index.html";
       });
   });
-  
+
   // key bindings
   jwerty.key('alt+l', function() {
-    $('#share-button').trigger('click');  
+    $('#share-button').trigger('click');
   });
   jwerty.key('alt+d', function() {
-    $('#desdm-button').trigger('click');  
+    $('#desdm-button').trigger('click');
   });
   jwerty.key('alt+m', function() {
-    $('#toggle-mask-button').trigger('click');  
+    $('#toggle-mask-button').trigger('click');
   });
   jwerty.key('alt+s', function() {
     $('#scaling-button').trigger('click');
@@ -439,9 +441,9 @@
     $('#reported-button').trigger('click');
   });
 
-  // Enter and Esc for special keybindings inside the problem modal  
+  // Enter and Esc for special keybindings inside the problem modal
   $('#problem-modal').bind('keydown', jwerty.event('Enter', function () { $('#problem-text-button').trigger('click'); }));
   $('#problem-modal').bind('keydown', jwerty.event('Esc', function () { closeProblemModal(); }));
-  
+
 </script>
 </html>

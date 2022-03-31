@@ -41,7 +41,7 @@ function getDBHandle() {
 function getNextImage($dbh, $uid) {
     global $config;
     $res = null;
-    $sql = 'SELECT "' . $config['release'] . '" as release, files.fileid, expname, ccd, band, name FROM files';
+    $sql = 'SELECT "' . $config['release'] . '" as release, files.fileid, expname, name FROM files';
 
     if (isset($_POST['expname']) && isset($_POST['ccd'])) {
         $sql .= ' WHERE ccd = ? AND files.expname = ? LIMIT 1';

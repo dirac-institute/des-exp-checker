@@ -3,11 +3,8 @@
 CREATE TABLE files (
  fileid INTEGER PRIMARY KEY ASC,
  expname TEXT,
- ccd INT,
- band TEXT,
  name TEXT
 );
-CREATE INDEX files_ccd_idx ON "files" (ccd);
 CREATE INDEX files_expname_idx ON "files" (expname);
 
 CREATE TABLE qa (
