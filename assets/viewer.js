@@ -16,13 +16,15 @@ function createVisualization(){
 // }
 
 function chooseRandom(){
+    var dbRow = "";
     $.ajax({
+        async: false,
         url: "db.php",
-        type: "GET",
+        type: "POST",
         dataType: "json",
         success: function(response) {
-        alert(response)
-        debugger;
-        }
+            dbRow = response.fileid;
+        },
     });
+    return dbRow;
 }
