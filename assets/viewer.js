@@ -4,16 +4,9 @@ function createVisualization(){
     const newImg = document.createElement("img");
     newImg.src = 'assets/kbmod-postage-stamps/' + randomName + '.png'
     el.append(newImg);
+    var newUrl = window.location.pathname + '?fildid=' + randomName;
+    window.history.replaceState(null, "Title", newUrl);
 }
-
-// function chooseRandom(){
-//     var queryResult;
-//     $.get('db.php', {'release': 'DEEP'}, function(response) {
-//         queryResult = response;
-//     }, 'json');
-//     $(this).val(queryResult);
-//     debugger;
-// }
 
 function chooseRandom(){
     var dbRow = "";
@@ -27,4 +20,14 @@ function chooseRandom(){
         },
     });
     return dbRow;
+}
+
+function newVisualization(){
+    var el = $('#wicked-science-visualization').get(0);
+    var randomName = chooseRandom();
+    const newImg = document.createElement("img");
+    newImg.src = 'assets/kbmod-postage-stamps/' + randomName + '.png'
+    el.replaceChild(newImg, el.childNodes[0])
+    var newUrl = window.location.pathname + '?fildid=' + randomName;
+    window.history.replaceState(null, "Title", newUrl);
 }

@@ -54,28 +54,9 @@
 
     <!-- BUTTONS -->
     <div style="margin-top:20px; position:relative;">
-      <button id="fine-button" class="btn btn-success send">Next</button>
-      <!--#include file="problem_selector.shtml"-->
-      <span id="mark-buttons" class="hide" style="margin-left: 10px;">
-        <button class="btn btn-primary" id="negative-button" data-toggle="button">False</button>
-        <button class="btn btn-primary hide" id="clear-button">Clear Last</button>
-      </span>
-      <span style="position:absolute; right: 0px; top:0px;">
-        <span class="muted" id="image_name"></span>
-        <div class="btn-group" style="margin-left:10px;">
-          <button id="info-button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Info</span>
-          <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li><a tabindex="-1" href="#" id="share-button">Share <u>l</u>ink</a></li>
-            <li><a tabindex="-1" href="#" id="desdm-button"><u>D</u>ownload image from DESDM</a></li>
-            <li><a tabindex="-1" href="#" id="fov-button">Show entire <u>F</u>oV</a></li>
-            <li><a tabindex="-1" href="#" id="reported-button">Show reported <u>p</u>roblems</a></li>
-          </ul>
-        </div>
-        <button class="btn btn-primary" href="#" id="toggle-mask-button">Toggle <u>m</u>ask</button>
-        <button class="btn btn-primary" href="#" id="scaling-button">Toggle <u>s</u>caling</button>
-      </span>
+      <button id="fine-button" class="btn btn-primary send">Next</button>
+      <button id="true-button" class="btn btn-success send">True</button>
+      <button id="false-button" class="btn btn-danger send">False</button>
     </div>
 
     <!-- IMAGE -->
@@ -240,34 +221,34 @@
     //   }
     // });
 
-    var urlparams = $.url().param();
-    if (urlparams.hasOwnProperty('release') === false)
-      urlparams['release'] = release;
+    // var urlparams = $.url().param();
+    // if (urlparams.hasOwnProperty('release') === false)
+    //   urlparams['release'] = release;
 
-    // if user is logged in: show user dropdown
-    if (checkSessionCookie()) {
-      getMyData();
-      setInterval(getMyData, 600000);
-      $('#login-li').hide();
-      $('#mydata-li').show();
-      // return to last image the user has seen before he logged in
-      if ($.cookie('lastfile') !== undefined) {
-        urlparams = $.url($.cookie('lastfile')).param();
-        $.removeCookie('lastfile');
-      }
-    }
-    else {
-      $('#login-modal').modal({"backdrop": true, "show":false, "keyboard": true});
-      $('a[class*="login-trigger"]').on('click', function(evt) {
-        $.cookie('lastfile', $('#share-url').val(), {expires: 1});
-        window.location.href=this.attr('href');
-      });
-      // is not: show message when user clicks on the problem button
-      $('#problem-button').on('click', function(evt) {
-        $('#login-modal').modal('show');
-        evt.preventDefault();
-      });
-    }
+    // // if user is logged in: show user dropdown
+    // if (checkSessionCookie()) {
+    //   getMyData();
+    //   setInterval(getMyData, 600000);
+    //   $('#login-li').hide();
+    //   $('#mydata-li').show();
+    //   // return to last image the user has seen before he logged in
+    //   if ($.cookie('lastfile') !== undefined) {
+    //     urlparams = $.url($.cookie('lastfile')).param();
+    //     $.removeCookie('lastfile');
+    //   }
+    // }
+    // else {
+    //   $('#login-modal').modal({"backdrop": true, "show":false, "keyboard": true});
+    //   $('a[class*="login-trigger"]').on('click', function(evt) {
+    //     $.cookie('lastfile', $('#share-url').val(), {expires: 1});
+    //     window.location.href=this.attr('href');
+    //   });
+    //   // is not: show message when user clicks on the problem button
+    //   $('#problem-button').on('click', function(evt) {
+    //     $('#login-modal').modal('show');
+    //     evt.preventDefault();
+    //   });
+    // }
 
     // // get first image data
     // getNextImage(urlparams);
@@ -275,175 +256,175 @@
     // setup FoV chip layout
     // setChipLayout();
   });
-  $('form').submit(function() {
-    return false;
-  });
+//   $('form').submit(function() {
+//     return false;
+//   });
 
-  // initialize fields and modals
-  problem_default = $('#problem-name').html();
-  $('#problem-modal').modal({"backdrop": false, "show": false, "keyboard": false });
-  $('#fov-modal').modal({"backdrop": false, "show": false, "keyboard": true });
-  $('#share-modal').modal({"backdrop": false, "show": false, "keyboard": true });
-  $('#desdm-modal').modal({"backdrop": false, "show": false, "keyboard": true });
-  $('#rank-modal').modal({"backdrop": false, "show":false, "keyboard": true});
-  $('#mystats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
-  $('#congrats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
-  $('#message-modal').modal({"backdrop": true, "show":false, "keyboard": false});
+//   // initialize fields and modals
+//   problem_default = $('#problem-name').html();
+//   $('#problem-modal').modal({"backdrop": false, "show": false, "keyboard": false });
+//   $('#fov-modal').modal({"backdrop": false, "show": false, "keyboard": true });
+//   $('#share-modal').modal({"backdrop": false, "show": false, "keyboard": true });
+//   $('#desdm-modal').modal({"backdrop": false, "show": false, "keyboard": true });
+//   $('#rank-modal').modal({"backdrop": false, "show":false, "keyboard": true});
+//   $('#mystats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
+//   $('#congrats-modal').modal({"backdrop": false, "show":false, "keyboard": true});
+//   $('#message-modal').modal({"backdrop": true, "show":false, "keyboard": false});
 
   // button actions
   $('button[class*="send"]').on('click', function(evt) {
-    sendResponse();
+    newVisualization();
   });
-  $('#share-button').on('click', function() {
-    $('#share-modal').modal('show');
-    var textBox = $('#share-url');
-    textBox.select();
-    // Work around Chrome's little problem
-    textBox.onmouseup = function() {
-      // Prevent further mouseup intervention
-      textBox.onmouseup = null;
-      return false;
-    };
-  });
-  $('#desdm-button').on('click', function() {
-  $('#desdm-modal').modal('show');
-    var dm_url="getImage.php?type=dm&release="+release+"&expname="+expname+"&ccd="+ccd;
-    var textBox = $('#desdm-url');
-    textBox.load(dm_url).select();
-    // Work around Chrome's little problem
-    textBox.onmouseup = function() {
-      // Prevent further mouseup intervention
-      textBox.onmouseup = null;
-      return false;
-    };
-  });
-  $('#fov-button').on('click', function() {
-    // load FoV image from DESDM
-    $('#fov-body').find('.fov-image').remove();
-    var fov_url = "getImage.php?type=fov&release="+release+"&expname="+expname;
-    $('<img class="fov-image" src="' + fov_url +'" border="0" />').load(function() {
-      $(this).width(530).appendTo('#fov-body');
-    });
-    $('#ccdmap').children('.ccdshape').each(function() {
-      var ccdnum = this.title.split(" ").pop();
-      if (ccdnum == ccd)
-        $(this).addClass('ccdshape-current');
-      else
-        $(this).removeClass('ccdshape-current');
-    });
-    $('#fov-modal').modal('show');
-  });
-  $('#reported-button').on('click', function() {
-    var elem = $($(webfits.reportCtx)[0].canvas);
-    // if new file: get reported problems
-    if (has_reported_problems === false) {
-      $('#loading').show();
-      setTimeout(function() { // add a little timeout to give feedback to user
-      $.get('problems.php', {'fileid': fileid , 'release': release}, function(response) {
-          if (response) {
-            for (var i=0; i < response.length; i++) {
-              addMark(response[i], webfits.reportCtx);
-            }
-          }
-          $('#loading').hide();
-          has_reported_problems = true;
-          elem.css('display', 'block');
-        }, 'json');
-      }, 500);
-    }
-    // toggle visibility of the canvas with the reported problems
-    else {
-      if (elem.css('display') == 'block')
-        elem.css('display', 'none');
-      else
-        elem.css('display', 'block');
-    }
-  });
-  $('#toggle-mask-button').on('click', function() {
-    webfits.showMask = !webfits.showMask;
-    webfits.draw();
-  });
-  $('#scaling-button').on('click', function() {
-    stretch = (stretch == "arcsinh" ? "peter" : "arcsinh");
-    webfits.setStretch(stretch);
-  });
-  $('#problem-text-button').on('click', function() {
-    $('#problem-modal').modal('hide');
-    var problemName = $('#problem-text').val();
-    // update typeahead
-    var typeahead_source = $('#problem-text').typeahead().data('typeahead').source;
-    if ($.inArray(problemName, typeahead_source) == -1)
-      typeahead_source.push(problemName);
-    if (problemName.length > 11)
-      problemName = problemName.substring(0,10) + "...";
-    $('#problem-name').html(problemName);
-  });
-  $('a[class*="problem"]').on('click', function(evt) {
-    problem = evt.target.innerHTML;
-    $('#problem-name').html(problem);
-    if (problem == "Other..." || problem == "Failure" || problem =="Awesome!") {
-      $('#problem-modal').modal('show');
-      $('#problem-text').val(''); // clear previous entry
-      $('#problem-text').focus();
-    } else {
-      $('#problem-text').val('');
-    }
-    var neg_button = $('#negative-button');
-    if (neg_button.hasClass('active')) {
-      neg_button.button('toggle');
-    }
-    $('#mark-buttons').show();
-  });
-  $('#problem-close-button').on('click', function() {
-    closeProblemModal();
-  });
-  $('#clear-button').on('click', function() {
-    clearLastMark();
-    if (marks.length == 0)
-      $('#clear-button').hide();
-  });
+//   $('#share-button').on('click', function() {
+//     $('#share-modal').modal('show');
+//     var textBox = $('#share-url');
+//     textBox.select();
+//     // Work around Chrome's little problem
+//     textBox.onmouseup = function() {
+//       // Prevent further mouseup intervention
+//       textBox.onmouseup = null;
+//       return false;
+//     };
+//   });
+//   $('#desdm-button').on('click', function() {
+//   $('#desdm-modal').modal('show');
+//     var dm_url="getImage.php?type=dm&release="+release+"&expname="+expname+"&ccd="+ccd;
+//     var textBox = $('#desdm-url');
+//     textBox.load(dm_url).select();
+//     // Work around Chrome's little problem
+//     textBox.onmouseup = function() {
+//       // Prevent further mouseup intervention
+//       textBox.onmouseup = null;
+//       return false;
+//     };
+//   });
+//   $('#fov-button').on('click', function() {
+//     // load FoV image from DESDM
+//     $('#fov-body').find('.fov-image').remove();
+//     var fov_url = "getImage.php?type=fov&release="+release+"&expname="+expname;
+//     $('<img class="fov-image" src="' + fov_url +'" border="0" />').load(function() {
+//       $(this).width(530).appendTo('#fov-body');
+//     });
+//     $('#ccdmap').children('.ccdshape').each(function() {
+//       var ccdnum = this.title.split(" ").pop();
+//       if (ccdnum == ccd)
+//         $(this).addClass('ccdshape-current');
+//       else
+//         $(this).removeClass('ccdshape-current');
+//     });
+//     $('#fov-modal').modal('show');
+//   });
+//   $('#reported-button').on('click', function() {
+//     var elem = $($(webfits.reportCtx)[0].canvas);
+//     // if new file: get reported problems
+//     if (has_reported_problems === false) {
+//       $('#loading').show();
+//       setTimeout(function() { // add a little timeout to give feedback to user
+//       $.get('problems.php', {'fileid': fileid , 'release': release}, function(response) {
+//           if (response) {
+//             for (var i=0; i < response.length; i++) {
+//               addMark(response[i], webfits.reportCtx);
+//             }
+//           }
+//           $('#loading').hide();
+//           has_reported_problems = true;
+//           elem.css('display', 'block');
+//         }, 'json');
+//       }, 500);
+//     }
+//     // toggle visibility of the canvas with the reported problems
+//     else {
+//       if (elem.css('display') == 'block')
+//         elem.css('display', 'none');
+//       else
+//         elem.css('display', 'block');
+//     }
+//   });
+//   $('#toggle-mask-button').on('click', function() {
+//     webfits.showMask = !webfits.showMask;
+//     webfits.draw();
+//   });
+//   $('#scaling-button').on('click', function() {
+//     stretch = (stretch == "arcsinh" ? "peter" : "arcsinh");
+//     webfits.setStretch(stretch);
+//   });
+//   $('#problem-text-button').on('click', function() {
+//     $('#problem-modal').modal('hide');
+//     var problemName = $('#problem-text').val();
+//     // update typeahead
+//     var typeahead_source = $('#problem-text').typeahead().data('typeahead').source;
+//     if ($.inArray(problemName, typeahead_source) == -1)
+//       typeahead_source.push(problemName);
+//     if (problemName.length > 11)
+//       problemName = problemName.substring(0,10) + "...";
+//     $('#problem-name').html(problemName);
+//   });
+//   $('a[class*="problem"]').on('click', function(evt) {
+//     problem = evt.target.innerHTML;
+//     $('#problem-name').html(problem);
+//     if (problem == "Other..." || problem == "Failure" || problem =="Awesome!") {
+//       $('#problem-modal').modal('show');
+//       $('#problem-text').val(''); // clear previous entry
+//       $('#problem-text').focus();
+//     } else {
+//       $('#problem-text').val('');
+//     }
+//     var neg_button = $('#negative-button');
+//     if (neg_button.hasClass('active')) {
+//       neg_button.button('toggle');
+//     }
+//     $('#mark-buttons').show();
+//   });
+//   $('#problem-close-button').on('click', function() {
+//     closeProblemModal();
+//   });
+//   $('#clear-button').on('click', function() {
+//     clearLastMark();
+//     if (marks.length == 0)
+//       $('#clear-button').hide();
+//   });
 
-  // user requests
-  $('#mystats-anchor').on('click', function() {
-    getMyData();
-    $('#mystats-modal').modal('show');
-  });
-  $('#leaderboard-anchor').on('click', function() {
-    getLeaderboard();
-    $('#rank-modal').modal('show');
-  });
-  $('#logout').on('click', function() {
-    $.post('login.php',{'logout':true}, function() {
-      window.location.href="index.html";
-      });
-  });
+//   // user requests
+//   $('#mystats-anchor').on('click', function() {
+//     getMyData();
+//     $('#mystats-modal').modal('show');
+//   });
+//   $('#leaderboard-anchor').on('click', function() {
+//     getLeaderboard();
+//     $('#rank-modal').modal('show');
+//   });
+//   $('#logout').on('click', function() {
+//     $.post('login.php',{'logout':true}, function() {
+//       window.location.href="index.html";
+//       });
+//   });
 
-  // key bindings
-  jwerty.key('alt+l', function() {
-    $('#share-button').trigger('click');
-  });
-  jwerty.key('alt+d', function() {
-    $('#desdm-button').trigger('click');
-  });
-  jwerty.key('alt+m', function() {
-    $('#toggle-mask-button').trigger('click');
-  });
-  jwerty.key('alt+s', function() {
-    $('#scaling-button').trigger('click');
-  });
-  jwerty.key('alt+f', function() {
-    $('#fov-button').trigger('click');
-  });
-  jwerty.key('alt+r', function() {
-    $('#squad-button').trigger('click');
-  });
-  jwerty.key('alt+p', function() {
-    $('#reported-button').trigger('click');
-  });
+//   // key bindings
+//   jwerty.key('alt+l', function() {
+//     $('#share-button').trigger('click');
+//   });
+//   jwerty.key('alt+d', function() {
+//     $('#desdm-button').trigger('click');
+//   });
+//   jwerty.key('alt+m', function() {
+//     $('#toggle-mask-button').trigger('click');
+//   });
+//   jwerty.key('alt+s', function() {
+//     $('#scaling-button').trigger('click');
+//   });
+//   jwerty.key('alt+f', function() {
+//     $('#fov-button').trigger('click');
+//   });
+//   jwerty.key('alt+r', function() {
+//     $('#squad-button').trigger('click');
+//   });
+//   jwerty.key('alt+p', function() {
+//     $('#reported-button').trigger('click');
+//   });
 
-  // Enter and Esc for special keybindings inside the problem modal
-  $('#problem-modal').bind('keydown', jwerty.event('Enter', function () { $('#problem-text-button').trigger('click'); }));
-  $('#problem-modal').bind('keydown', jwerty.event('Esc', function () { closeProblemModal(); }));
+//   // Enter and Esc for special keybindings inside the problem modal
+//   $('#problem-modal').bind('keydown', jwerty.event('Enter', function () { $('#problem-text-button').trigger('click'); }));
+//   $('#problem-modal').bind('keydown', jwerty.event('Esc', function () { closeProblemModal(); }));
 
 </script>
 </html>
