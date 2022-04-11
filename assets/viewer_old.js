@@ -9,76 +9,76 @@ var ccd = null;
 var problem_default = null;
 var has_reported_problems = false;
 
-// function addMark(prob, ctx) {
-//   var color = '#FFFF00';
-//   if (ctx === undefined)
-//     ctx = webfits.overlayCtx;
-//   else
-//     color = '#FFA500';
-//   ctx.beginPath();
-//   if (prob.problem[0] == "-") {
-//     ctx.moveTo(prob.x-28, prob.y-28);
-//     ctx.lineTo(prob.x+28, prob.y+28);
-//     ctx.moveTo(prob.x-28, prob.y+28);
-//     ctx.lineTo(prob.x+28, prob.y-28);
-//   }
-//   else
-//     ctx.arc(prob.x, prob.y, 40, 0, 2*Math.PI, true);
-//   ctx.lineWidth=2;
-//   ctx.strokeStyle=color;
-//   ctx.shadowColor = '#000000';
-//   ctx.shadowBlur = 10;
-//   ctx.shadowOffsetX = 6;
-//   ctx.shadowOffsetY = 3;
-//   ctx.stroke();
+function addMark(prob, ctx) {
+  var color = '#FFFF00';
+  if (ctx === undefined)
+    ctx = webfits.overlayCtx;
+  else
+    color = '#FFA500';
+  ctx.beginPath();
+  if (prob.problem[0] == "-") {
+    ctx.moveTo(prob.x-28, prob.y-28);
+    ctx.lineTo(prob.x+28, prob.y+28);
+    ctx.moveTo(prob.x-28, prob.y+28);
+    ctx.lineTo(prob.x+28, prob.y-28);
+  }
+  else
+    ctx.arc(prob.x, prob.y, 40, 0, 2*Math.PI, true);
+  ctx.lineWidth=2;
+  ctx.strokeStyle=color;
+  ctx.shadowColor = '#000000';
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 6;
+  ctx.shadowOffsetY = 3;
+  ctx.stroke();
 
-//   ctx.font = '14px Helvetica';
-//   ctx.textAlign = 'center';
-//   ctx.textBaseline = 'middle';
-//   ctx.fillStyle = color;
-//   ctx.shadowColor = '#000000';
-//   ctx.shadowBlur = 3;
-//   ctx.shadowOffsetX = 2;
-//   ctx.shadowOffsetY = 1;
-//   ctx.fillText(prob.problem, prob.x, prob.y);
-// }
+  ctx.font = '14px Helvetica';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = color;
+  ctx.shadowColor = '#000000';
+  ctx.shadowBlur = 3;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 1;
+  ctx.fillText(prob.problem, prob.x, prob.y);
+}
 
-// function overlayCallback(_this, opts, evt) {
-//   if (problem !== null) {
-//     // add circle around dbl-clicked location
-//     var rect = _this.canvas.getBoundingClientRect();
-//     var negative = '';
-//     if ($('#negative-button').hasClass('active'))
-//       negative = '-';
-//     var prob = {
-//       x: (evt.clientX - rect.left + 0.5), // for unknown reasons, there is a 0.5 pixel shift in rect.left/right
-//       y: (evt.clientY - rect.top),
-//       problem: negative + problem,
-//       detail: $('#problem-text').val() == "" ? null : $('#problem-text').val()
-//     };
-//     marks.push(prob);
-//     addMark(prob);
+function overlayCallback(_this, opts, evt) {
+  if (problem !== null) {
+    // add circle around dbl-clicked location
+    var rect = _this.canvas.getBoundingClientRect();
+    var negative = '';
+    if ($('#negative-button').hasClass('active'))
+      negative = '-';
+    var prob = {
+      x: (evt.clientX - rect.left + 0.5), // for unknown reasons, there is a 0.5 pixel shift in rect.left/right
+      y: (evt.clientY - rect.top),
+      problem: negative + problem,
+      detail: $('#problem-text').val() == "" ? null : $('#problem-text').val()
+    };
+    marks.push(prob);
+    addMark(prob);
 
-//     // show the clear button
-//     $('#clear-button').show();
-//   }
-// }
+    // show the clear button
+    $('#clear-button').show();
+  }
+}
 
-// function clearMarks(ctx) {
-//   if (ctx === undefined) {
-//     ctx = webfits.overlayCtx;
-//     marks = [];
-//   }
-//   ctx.clearRect(0,0,webfits.canvas.width, webfits.canvas.height);
-// }
+function clearMarks(ctx) {
+  if (ctx === undefined) {
+    ctx = webfits.overlayCtx;
+    marks = [];
+  }
+  ctx.clearRect(0,0,webfits.canvas.width, webfits.canvas.height);
+}
 
-// function clearLastMark() {
-//   marks.pop();
-//   webfits.overlayCtx.clearRect(0,0,webfits.canvas.width, webfits.canvas.height);
-//   for (var i=0; i < marks.length; i++) {
-//     addMark(marks[i]);
-//   }
-// }
+function clearLastMark() {
+  marks.pop();
+  webfits.overlayCtx.clearRect(0,0,webfits.canvas.width, webfits.canvas.height);
+  for (var i=0; i < marks.length; i++) {
+    addMark(marks[i]);
+  }
+}
 
 // Define callback to be executed after image is received from the server
 function getImage(f, opts) {
